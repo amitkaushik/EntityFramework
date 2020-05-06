@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SampleModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="EmployeeID" />
+    </Key>
+    <Property Name="EmployeeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Gender" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="EmployeeContactDetail" Relationship="SampleModel.EmployeeEmployeeContactDetails" FromRole="Employee" ToRole="EmployeeContactDetails" />
+  </EntityType>
+  <EntityContainer Name="EmployeeDBCondext" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Employees" EntityType="Self.Employee" />
+    <EntitySet Name="EmployeeContactDetails" EntityType="SampleModel.EmployeeContactDetails" />
+    <AssociationSet Name="EmployeeEmployeeContactDetails" Association="SampleModel.EmployeeEmployeeContactDetails">
+      <End Role="Employee" EntitySet="Employees" />
+      <End Role="EmployeeContactDetails" EntitySet="EmployeeContactDetails" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="EmployeeContactDetails">
+    <Key>
+      <PropertyRef Name="EmployeeID" />
+    </Key>
+    <Property Name="EmployeeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="LandLine" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Employee" Relationship="SampleModel.EmployeeEmployeeContactDetails" FromRole="EmployeeContactDetails" ToRole="Employee" />
+  </EntityType>
+  <Association Name="EmployeeEmployeeContactDetails">
+    <End Type="SampleModel.Employee" Role="Employee" Multiplicity="1" />
+    <End Type="SampleModel.EmployeeContactDetails" Role="EmployeeContactDetails" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="EmployeeID" />
+      </Principal>
+      <Dependent Role="EmployeeContactDetails">
+        <PropertyRef Name="EmployeeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
